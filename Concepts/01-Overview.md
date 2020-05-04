@@ -2,15 +2,15 @@
 
 ## What is Kubernetes?
 
-Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
+"Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation".
 
-The name Kubernetes originates from Greek, meaning helmsman or pilot. Google open-sourced the Kubernetes project in 2014. Kubernetes combines over 15 years of Google’s experience running production workloads at scale with best-of-breed ideas and practices from the community.
+"Kubernetes" is Greek for "helmsman" or "pilot". Google open-sourced in 2014.
 
 This diagram shows the evolution of deployments from the traditional bare metal server model, through virtual machines to containers:
 
 ![Container Evolution](images/container-evolution.png)
 
-Containers are popular because of the following benefits:
+According to the kubernetes doc, containers are popular because:
 
 * Agile application creation and deployment: increased ease and efficiency of container image creation compared to VM image use.
 * Continuous development, integration, and deployment: provides for reliable and frequent container image build and deployment with quick and easy rollbacks (due to image immutability).
@@ -51,11 +51,11 @@ It is not a traditional, monolithic, all-inclusive PaaS (Platform as a Service) 
 
 When you deploy Kubernetes, you get a cluster.
 
-A cluster consists of a set of workers, called nodes, that run containerized apps.
+A cluster is a set of workers (nodes) that run app containers.
 
-Worker nodes host pods that are the components of the app workload.
+Worker nodes host pods that comprise the app workload.
 
-The control plane manages the nodes and pods in the cluster.
+A control plane manages the nodes and pods in the cluster.
 
 ![Kubernetes Cluster](images/kubernetes-cluster.png)
 
@@ -73,7 +73,7 @@ The control plane manages the nodes and pods in the cluster.
     * Route controller
     * Service controller
 
-Cloud controller runs controllers specific to your cloud provider
+The Cloud controller runs controllers specific to your cloud provider:
 
 ### Node Components
 * [kubelet](https://kubernetes.io/docs/concepts/overview/components/#kubelet)
@@ -93,7 +93,7 @@ Cloud controller runs controllers specific to your cloud provider
 
 [Controlling API Access](https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/)
 
-The Kubernetes API serves as the foundation for the declarative configuration schema for the system. The [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) tool can be used to create, update, delete and get API objects.
+The Kubernetes API is the foundation for the declarative configuration of the system. The [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) tool can be used to create, update, delete and get API objects.
 
 
 ### API changes
@@ -104,7 +104,7 @@ The Kubernetes API serves as the foundation for the declarative configuration sc
 ### OpenAPI and Swagger definitions
 [OpenAPI](https://www.openapis.org/)
 
-Starting with Kubernetes 1.10, the Kubernetes API server serves an OpenAPI spec via the /openapi/v2 endpoint. The requested format is specified by setting HTTP headers.
+Starting with Kubernetes 1.10, the Kubernetes API server serves an OpenAPI spec via the /openapi/v2 endpoint.
 
 OpenAPI spec:
 
@@ -138,13 +138,13 @@ DaemonSets, Deployments, StatefulSet, NetworkPolicies, PodSecurityPolcies and Re
 ## Working with Kubernetes Objects
 
 ### Understanding Kubernetes Objects
-Kubernetes objects are persistent entities in the Kubernetes system. Kubernetes uses these entities to represent the state of your cluster. Specifically, they can describe:
+Kubernetes objects are persistent entities. Kubernetes uses them entities to represent cluster state. Specifically, they describe:
 
 * What containerized applications are running (and on which nodes)
 * The resources available to those applications
 * The policies around how those applications behave, such as restart policies, upgrades, and fault-tolerance
 
-A Kubernetes object is a “record of intent”--once you create the object, the Kubernetes system will constantly work to ensure that object exists. By creating an object, you’re effectively telling the Kubernetes system what you want your cluster’s workload to look like; this is your cluster’s desired state.
+A Kubernetes object is a “record of intent”. Once created, Kubernetes will work to ensure it continues to exist: this is your cluster’s "desired state".
 
 #### Object Spec and Status
 
@@ -236,7 +236,7 @@ Disadvantages:
 * Updates to live objects must be reflected in config files, or will be lost during next replacement.
 
 #### Declarative object configuration
-When using declarative object configuration, a user operates on object configuration files stored locally, however the user does not define the operations to be taken on the files. Create, update, and delete operations are automatically detected per-object by kubectl. This enables working on directories, where different operations might be needed for different objects.
+When using declarative object configuration, a user operates on object configuration files stored locally. Create, update, and delete operations are automatically detected per-object.
 
 Advantages:
 * Changes made directly to live objects are retained, even if they are not merged back into the configuration files.
@@ -263,7 +263,7 @@ $ kubectl apply -R -f configs/
 ```
 
 ### Object Names and IDs
-Each object in your cluster has a Name that is unique for that type of resource. Every Kubernetes object also has a UID that is unique across your whole cluster.
+Each object in your cluster has a unique Name for that resource type. Every Kubernetes object also has clusterwide unique UID.
 
 #### Names
 * DNS subdomain names
@@ -273,10 +273,10 @@ Each object in your cluster has a Name that is unique for that type of resource.
 #### IDs
 
 ### Namespaces
-Kubernetes supports multiple virtual clusters backed by the same physical cluster. These virtual clusters are called namespaces.
+Kubernetes supports multiple virtual clusters on the same physical cluster. These are called namespaces.
 
 #### When to use
-Namespaces are intended for use in environments with many users spread across multiple teams, or projects.
+Namespaces are intended for use where you have many users spread across multiple projects.
 
 #### Working with namespaces
 ```bash
@@ -303,7 +303,7 @@ $ kubectl config set-context --current --namespace=<namespace>
 $ kubectl config view --minify | grep namespace:
 ```
 #### Namespaces and DNS
- If you want to reach across namespaces, you need to use the fully qualified domain name (FQDN) that includes the target namespace.
+If you want to reach across namespaces, you need to use the fully qualified domain name (FQDN) that includes the target namespace.
 
 #### Not all objects are in a namespace
 Most resources are in a namespace, but some are not. Also, low level resources like nodes and persistent volumes are not.
@@ -317,8 +317,6 @@ $ kubectl api-resources --namespaced=false
 ### Labels and Selectors
 #### Labels
 Labels are key/value pairs attached to objects, such as pods, that are intended to be meaningful to users.
-
-Labels enable users to map their own organizational structures onto system objects in a loosely coupled fashion, without requiring clients to store these mappings.
 
 Example labels:
 
@@ -338,9 +336,7 @@ Example labels:
 ```
 
 #### Label selectors
-Unlike names and UIDs, labels do not provide uniqueness. In general, we expect many objects to carry the same label(s).
-
-Via a label selector, the client/user can identify a set of objects. The label selector is the core grouping primitive in Kubernetes.
+Unlike names and UIDs, labels are not unique. Many objects will carry the same label.
 
 Equality or inequality requirements allow filtering by label keys:
 
@@ -392,7 +388,7 @@ selector:
 ```
 
 ### Annotations
-You can use Kubernetes annotations to attach arbitrary non-identifying metadata to objects. Clients such as tools and libraries can retrieve this metadata.
+Kubernetes annotations are used to attach metadata to objects.
 
 ```yaml
 "metadata": {
@@ -413,7 +409,7 @@ Some examples of use:
 * Directives from the end-user
 
 ### Field Selectors
-Field selectors let you select Kubernetes resources based on the value of one or more resource fields. Here are some examples of field selector queries:
+Field selectors let you select Kubernetes resources based on the value of one or more resource fields, such as:
 * metadata.name=my-service
 * metadata.namespace!=default
 * status.phase=Pending
@@ -421,9 +417,9 @@ Field selectors let you select Kubernetes resources based on the value of one or
 ```bash
 $ kubectl get pods --field-selector status.phase=Running
 ```
-Supported field selectors vary by Kubernetes resource type. All resource types support the metadata.name and metad
+Available field selectors vary by Kubernetes resource type.
 
-You can use the =, ==, and != operators with field selectors (= and == mean the same thing).
+You can use the =, ==, and != operators (= and == mean the same thing).
 
 ```bash
 $ kubectl get services  --all-namespaces --field-selector metadata.namespace!=default
@@ -441,10 +437,9 @@ $ kubectl get statefulsets,services --all-namespaces --field-selector metadata.n
 ```
 
 ### Recommended Labels
-You can visualize and manage Kubernetes objects with more tools than kubectl and the dashboard. A common set of labels allows tools to work interoperably, describing objects in a common manner that all tools can understand.
 
 #### Labels
-In order to take full advantage of using these labels, they should be applied on every resource object.
+Best practice: Labels should be applied on every resource object.
 
 |Key                        |Description                    |Example                |Type
 |-----                      |-----                          |-----                  |-----  |
@@ -470,7 +465,7 @@ metadata:
 ```
 
 #### Applications and Instances of Applications
-An application can be installed one or more times into a Kubernetes cluster and, in some cases, the same namespace. For example, wordpress can be installed more than once where different websites are different installations of wordpress.
+An application can be installed many times into a cluster and namespace. For example, wordpress installed for different web sites.
 
 #### Examples
 Web Application with a database:

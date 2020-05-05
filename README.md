@@ -5,4 +5,6 @@ Mostly shamelessly copied and pasted from [kubernetes.io](https://kubernetes.io)
 
 [Tutorials](https://kubernetes.io/docs/tutorials/)
 
+[Kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+
 

@@ -454,7 +454,7 @@ profiles:
 In Kubernetes, directives related to “Affinity” control how Pods are scheduled - more packed or more scattered.
 
 ### Disruptions
-See complette [guide](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/).
+See complete [guide](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/).
 
 #### Voluntary and involuntary Disruptions
 Pods do not disappear until someone (a person or a controller) destroys them, or there is an unavoidable hardware or system software error.
@@ -571,7 +571,6 @@ Ephemeral Containers:
     Mounts:         <none>
 ...
 ```
-
 
 ## Controllers
 
